@@ -16,10 +16,13 @@ namespace airport {
 		int in_cloud = 0;
 		float speed;
 		int score;
-		enum class dir_plane { stay, right, left, down, up } where_plane;
+		ref struct dir_plane {
+			bool right, left, down, up;
+		} where_plane;
 		int is_start = 0;
 		int size_plane, widht_cloud, height_cloud;
 		void setup() {
+			in_cloud = 0;
 			speed = 2;
 			timer1->Start();
 			score_text->Text = Convert::ToString(1);
@@ -28,7 +31,10 @@ namespace airport {
 			widht_cloud = 120;
 			loc_x = 320;
 			loc_y = 400;
-			where_plane = dir_plane::stay;
+			where_plane.up = 0;
+			where_plane.down = 0;
+			where_plane.left = 0;
+			where_plane.right = 0;
 			cloud_xy_coord[0, 1] = -100;
 			cloud_xy_coord[0, 0] = 20;
 			cloud_xy_coord[1, 1] = -100;
@@ -76,14 +82,14 @@ namespace airport {
 	private: System::Windows::Forms::Timer^ timer1;
 	public:
 		game(void)
-			 {
-				 InitializeComponent();
-				 // 
-				 //TODO: добавьте код конструктора 
-				 // 
-				 SetStyle(ControlStyles::OptimizedDoubleBuffer | ControlStyles::AllPaintingInWmPaint | ControlStyles::UserPaint, true);
-				 UpdateStyles();
-			 }
+		{
+			InitializeComponent();
+			// 
+			//TODO: добавьте код конструктора 
+			// 
+			SetStyle(ControlStyles::OptimizedDoubleBuffer | ControlStyles::AllPaintingInWmPaint | ControlStyles::UserPaint, true);
+			UpdateStyles();
+		}
 	protected:
 		/// <summary> 
 		/// Освободить все используемые ресурсы. 
@@ -376,18 +382,23 @@ namespace airport {
 			speed += 0.5;
 
 	}
-
 	private: System::Void Game_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 		switch (e->KeyCode) {
-		case Keys::Right: where_plane = dir_plane::right; break;
-		case Keys::Left: where_plane = dir_plane::left; break;
-		case Keys::Down: where_plane = dir_plane::down; break;
-		case Keys::Up: where_plane = dir_plane::up; break;
+		case Keys::Right: where_plane.right = 1; break;
+		case Keys::Left: where_plane.left = 1; break;
+		case Keys::Down: where_plane.down = 1; break;
+		case Keys::Up: where_plane.up = 1; break;
 		}
 	}
-
+	private: System::Void Game_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		switch (e->KeyCode) {
+		case Keys::Right: where_plane.right = 0; break;
+		case Keys::Left: where_plane.left = 0; break;
+		case Keys::Down: where_plane.down = 0; break;
+		case Keys::Up: where_plane.up = 0; break;
+		}
+	}
 	private: void move_object() {
-
 		Random rnd;
 		for (int i = 0; i < 9; i++) {
 			//проверка на встречу крыла самолёта с облаком по OY 
@@ -417,7 +428,6 @@ namespace airport {
 				is_start = false;
 				score = Convert::ToInt32(score_text->Text) / 10;
 				timer1->Stop();
-				where_plane = dir_plane::stay;
 				//make_new_pass^ new_rec = gcnew make_new_pass();
 				////изменяем свойства вызываемой формы для записи рекордов 
 				//new_rec->is_pass = false;
@@ -453,15 +463,15 @@ namespace airport {
 		for (int i = 0; i < 9; i++)
 			cloud_xy_coord[i, 1] += speed;
 		int x = 5;
-		switch (where_plane) {
-		case dir_plane::right: promotion(x, 0); break;
-		case dir_plane::left: promotion(-x, 0); break;
-		case dir_plane::down: promotion(0, x); break;
-		case dir_plane::up: promotion(0, -x); break;
-		}
-	}
-	private: System::Void Game_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-		where_plane = dir_plane::stay;
+		//направления движения самолета
+		if (where_plane.up)
+			promotion(0, -x);
+		if (where_plane.down)
+			promotion(0, x);
+		if (where_plane.left)
+			promotion(-x, 0);
+		if (where_plane.right)
+			promotion(x, 0);
 	}
 
 	private: System::Void Game_button_Click(System::Object^ sender, System::EventArgs^ e) {
