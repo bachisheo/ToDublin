@@ -4,3 +4,12 @@
 
 *.opendb
 *.tlog
+*.exe
+*.metagen
+*.log
+*.pdb
+*.cashe
+*.ipch
+*.db
+*.suo
+*.obj

@@ -387,6 +387,7 @@ namespace airport {
 	}
 
 	private: void move_object() {
+
 		Random rnd;
 		for (int i = 0; i < 9; i++) {
 			//проверка на встречу крыла самолёта с облаком по OY 
