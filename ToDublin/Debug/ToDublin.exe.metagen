@@ -21,7 +21,7 @@ Class airport.game: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Int32 in_cloud : Public
     Single speed : Public
     Int32 score : Public
-    dir_plane where_plane : Public
+    dir_plane where_plane IsByValue : Public, InitOnly
     Int32 is_start : Public
     Int32 size_plane : Public
     Int32 widht_cloud : Public
@@ -34,12 +34,10 @@ Class airport.game: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
   Methods:
     setup(): PrivateScope, Public, HideBySig
     promotion(Int32, Int32): PrivateScope, Public, HideBySig
-Struct airport.game+dir_plane: AutoLayout, AnsiClass, Class, NestedPublic, Sealed, BeforeFieldInit
-  :System.Enum
+Class airport.game+dir_plane: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Fields:
-    Int32 value__ : Public, SpecialName, RTSpecialName
-    dir_plane stay = 0 : Public, Static, Literal, HasDefault
-    dir_plane right = 1 : Public, Static, Literal, HasDefault
-    dir_plane left = 2 : Public, Static, Literal, HasDefault
-    dir_plane down = 3 : Public, Static, Literal, HasDefault
-    dir_plane up = 4 : Public, Static, Literal, HasDefault
+    Boolean right : Public
+    Boolean left : Public
+    Boolean down : Public
+    Boolean up : Public
