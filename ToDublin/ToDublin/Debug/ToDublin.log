@@ -1,0 +1,6 @@
+﻿  Game.cpp
+C:\Users\4shus\source\repos\ToDublin\ToDublin\ToDublin\Game.h(453,25): warning C4244:  аргумент: преобразование "float" в "int", возможна потеря данных
+C:\Users\4shus\source\repos\ToDublin\ToDublin\ToDublin\Game.h(530,29): warning C4101:  ex: неиспользованная локальная переменная
+C:\Users\4shus\source\repos\ToDublin\ToDublin\ToDublin\Game.cpp(5,33): warning C4829:  Возможно, неправильные параметры функции main. Рекомендуемый вариант - "int main(Platform::Array<Platform::String^>^ argv)"
+  Game.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
+  ToDublin.vcxproj -> C:\Users\4shus\source\repos\ToDublin\ToDublin\Debug\ToDublin.exe
