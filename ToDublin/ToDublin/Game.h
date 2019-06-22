@@ -21,50 +21,22 @@ namespace airport {
 		} where_plane;
 		int is_start = 0;
 		int size_plane, widht_cloud, height_cloud;
-		void setup() {
-			in_cloud = 0;
-			speed = 2;
-			timer1->Start();
-			score_text->Text = Convert::ToString(1);
-			size_plane = 100;
-			height_cloud = 75;
-			widht_cloud = 120;
-			loc_x = 320;
-			loc_y = 400;
-			where_plane.up = 0;
-			where_plane.down = 0;
-			where_plane.left = 0;
-			where_plane.right = 0;
-			cloud_xy_coord[0, 1] = -100;
-			cloud_xy_coord[0, 0] = 20;
-			cloud_xy_coord[1, 1] = -100;
-			cloud_xy_coord[1, 0] = 220;
-			cloud_xy_coord[2, 1] = -100;
-			cloud_xy_coord[2, 0] = 520;
-			cloud_xy_coord[3, 1] = -330;
-			cloud_xy_coord[3, 0] = 120;
-			cloud_xy_coord[4, 1] = -330;
-			cloud_xy_coord[4, 0] = 270;
-			cloud_xy_coord[5, 1] = -330;
-			cloud_xy_coord[5, 0] = 320;
-			cloud_xy_coord[6, 1] = -580;
-			cloud_xy_coord[6, 0] = 20;
-			cloud_xy_coord[7, 1] = -580;
-			cloud_xy_coord[7, 0] = 120;
-			cloud_xy_coord[8, 1] = -580;
-			cloud_xy_coord[8, 0] = 620;
-		};
-		array<int, 2> ^ cloud_xy_coord = gcnew array<int, 2>(9, 2);
-		int loc_x;
-		int loc_y;
-		void promotion(int x, int y) {
-			if ((loc_x == 0 && x > 0) || (loc_x == (this->Width - 100) && x < 0) || (loc_x > 0 && loc_x < (this->Width - 100)))
-				loc_x += x;
-			if ((loc_y == 400 && y < 0) || (loc_y == 0 && y > 0) || (loc_y > 0 && loc_y < 400))
-				loc_y += y;
-		}
-		Bitmap^ cloud;
-		Bitmap^ plane;
+	private: System::Windows::Forms::Panel^ health_bar;
+	public:
+	private: System::Windows::Forms::PictureBox^ green_health;
+	private: System::Windows::Forms::PictureBox^ pictureBox2;
+	private: System::Windows::Forms::Label^ label4;
+			 array<int, 2> ^ cloud_xy_coord = gcnew array<int, 2>(9, 2);
+			 int loc_x;
+			 int loc_y;
+			 void promotion(int x, int y) {
+				 if (loc_x + x >= 0 && loc_x + x <= (this->Width - size_plane - 14))
+					 loc_x += x;
+				 if (loc_y + y >= 0 && loc_y + y <= (this->Height - size_plane - 30))
+					 loc_y += y;
+			 }
+			 Bitmap^ cloud;
+			 Bitmap^ plane;
 
 	private: System::Windows::Forms::Button^ game_button;
 	private: System::Windows::Forms::Button^ rec_button;
@@ -77,7 +49,8 @@ namespace airport {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^ time;
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Label^ label2;
-	private: System::Windows::Forms::Label^ label3;
+	private: System::Windows::Forms::Label^ minus300;
+
 	private: System::Windows::Forms::Button^ right_button;
 	private: System::Windows::Forms::Timer^ timer1;
 	public:
@@ -114,6 +87,7 @@ namespace airport {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(game::typeid));
 			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::Windows::Forms::DataGridViewCellStyle^ dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
@@ -129,9 +103,16 @@ namespace airport {
 			this->time = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->button1 = (gcnew System::Windows::Forms::Button());
 			this->label2 = (gcnew System::Windows::Forms::Label());
-			this->label3 = (gcnew System::Windows::Forms::Label());
+			this->minus300 = (gcnew System::Windows::Forms::Label());
+			this->health_bar = (gcnew System::Windows::Forms::Panel());
+			this->green_health = (gcnew System::Windows::Forms::PictureBox());
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
+			this->health_bar->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->green_health))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// timer1
@@ -218,9 +199,11 @@ namespace airport {
 			// pictureBox1
 			// 
 			this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
-			this->pictureBox1->Location = System::Drawing::Point(307, 407);
+			this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			this->pictureBox1->Location = System::Drawing::Point(320, 400);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(130, 134);
+			this->pictureBox1->Size = System::Drawing::Size(100, 100);
+			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
 			this->pictureBox1->TabIndex = 5;
 			this->pictureBox1->TabStop = false;
 			// 
@@ -312,19 +295,61 @@ namespace airport {
 			this->label2->TextAlign = System::Drawing::ContentAlignment::TopCenter;
 			this->label2->Visible = false;
 			// 
-			// label3
+			// minus300
 			// 
-			this->label3->AutoSize = true;
-			this->label3->BackColor = System::Drawing::Color::Transparent;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Sylfaen", 10.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->minus300->AutoSize = true;
+			this->minus300->BackColor = System::Drawing::Color::Transparent;
+			this->minus300->Font = (gcnew System::Drawing::Font(L"Sylfaen", 10.2F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->label3->ForeColor = System::Drawing::Color::Red;
-			this->label3->Location = System::Drawing::Point(502, 13);
-			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(43, 18);
-			this->label3->TabIndex = 9;
-			this->label3->Text = L"-300!";
-			this->label3->Visible = false;
+			this->minus300->ForeColor = System::Drawing::Color::Red;
+			this->minus300->Location = System::Drawing::Point(502, 13);
+			this->minus300->Name = L"minus300";
+			this->minus300->Size = System::Drawing::Size(43, 18);
+			this->minus300->TabIndex = 9;
+			this->minus300->Text = L"-300!";
+			this->minus300->Visible = false;
+			// 
+			// health_bar
+			// 
+			this->health_bar->BackColor = System::Drawing::Color::Transparent;
+			this->health_bar->Controls->Add(this->green_health);
+			this->health_bar->Controls->Add(this->pictureBox2);
+			this->health_bar->Controls->Add(this->label4);
+			this->health_bar->Location = System::Drawing::Point(0, 524);
+			this->health_bar->Name = L"health_bar";
+			this->health_bar->Size = System::Drawing::Size(169, 27);
+			this->health_bar->TabIndex = 10;
+			this->health_bar->Visible = false;
+			// 
+			// green_health
+			// 
+			this->green_health->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(0)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(0)));
+			this->green_health->Location = System::Drawing::Point(63, 7);
+			this->green_health->Name = L"green_health";
+			this->green_health->Size = System::Drawing::Size(100, 13);
+			this->green_health->TabIndex = 12;
+			this->green_health->TabStop = false;
+			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->BackColor = System::Drawing::Color::DarkRed;
+			this->pictureBox2->Location = System::Drawing::Point(63, 7);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(100, 13);
+			this->pictureBox2->TabIndex = 11;
+			this->pictureBox2->TabStop = false;
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->BackColor = System::Drawing::Color::Transparent;
+			this->label4->ForeColor = System::Drawing::Color::Navy;
+			this->label4->Location = System::Drawing::Point(3, 3);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(62, 18);
+			this->label4->TabIndex = 11;
+			this->label4->Text = L"Здоровье";
 			// 
 			// game
 			// 
@@ -332,7 +357,8 @@ namespace airport {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::LightSkyBlue;
 			this->ClientSize = System::Drawing::Size(732, 553);
-			this->Controls->Add(this->label3);
+			this->Controls->Add(this->health_bar);
+			this->Controls->Add(this->minus300);
 			this->Controls->Add(this->button1);
 			this->Controls->Add(this->score_text);
 			this->Controls->Add(this->label1);
@@ -356,6 +382,10 @@ namespace airport {
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &game::Game_KeyUp);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
+			this->health_bar->ResumeLayout(false);
+			this->health_bar->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->green_health))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -398,6 +428,41 @@ namespace airport {
 		case Keys::Up: where_plane.up = 0; break;
 		}
 	}
+	private: void setup() {
+		in_cloud = 0;
+		speed = 2;
+		timer1->Start();
+		score_text->Text = Convert::ToString(1);
+		size_plane = 100;
+		height_cloud = 75;
+		widht_cloud = 120;
+		loc_x = 320;
+		loc_y = 400;
+		where_plane.up = 0;
+		where_plane.down = 0;
+		where_plane.left = 0;
+		where_plane.right = 0;
+		cloud_xy_coord[0, 1] = -100;
+		cloud_xy_coord[0, 0] = 20;
+		cloud_xy_coord[1, 1] = -100;
+		cloud_xy_coord[1, 0] = 220;
+		cloud_xy_coord[2, 1] = -100;
+		cloud_xy_coord[2, 0] = 520;
+		cloud_xy_coord[3, 1] = -330;
+		cloud_xy_coord[3, 0] = 120;
+		cloud_xy_coord[4, 1] = -330;
+		cloud_xy_coord[4, 0] = 270;
+		cloud_xy_coord[5, 1] = -330;
+		cloud_xy_coord[5, 0] = 320;
+		cloud_xy_coord[6, 1] = -580;
+		cloud_xy_coord[6, 0] = 20;
+		cloud_xy_coord[7, 1] = -580;
+		cloud_xy_coord[7, 0] = 120;
+		cloud_xy_coord[8, 1] = -580;
+		cloud_xy_coord[8, 0] = 620;
+		green_health->Width = 100;
+		health_bar->Show();
+	}
 	private: void game_over() {
 		is_start = false;
 		score = Convert::ToInt32(score_text->Text) / 10;
@@ -427,55 +492,71 @@ namespace airport {
 		rec_button->Show();
 		label1->Show();
 		score_text->Hide();
+		health_bar->Hide();
 	}
 	private: void move_object() {
-		Random rnd;
+		Random^ rnd = gcnew Random();
 		for (int i = 0; i < 9; i++) {
 			//проверка на встречу крыла самолёта с облаком по OY 
 			if ((loc_y + size_plane * 0.4 - cloud_xy_coord[i, 1]) > 0 && (loc_y + size_plane * 0.6 - ((cloud_xy_coord[i, 1]) + height_cloud)) < 0) {
 				//слева 
-				if (!in_cloud && (loc_x - cloud_xy_coord[i, 0]) > 0 && (loc_x - (cloud_xy_coord[i, 0] + widht_cloud)) < 0) {
-					label3->Location = Point(loc_x - 50, loc_y);
-					label3->Visible = true;
-					score_text->Text = Convert::ToString(Convert::ToInt32(score_text->Text) - 300);
-					in_cloud = i + 1;
+				if ((loc_x - cloud_xy_coord[i, 0]) > 0 && (loc_x - (cloud_xy_coord[i, 0] + widht_cloud)) < 0) {
+					if (!in_cloud) {
+						minus300->Location = Point(loc_x - 50, loc_y);
+						minus300->Visible = true;
+						score_text->Text = Convert::ToString(Convert::ToInt32(score_text->Text) - 300);
+						in_cloud = i + 1;
+					}
+					else {
+						green_health->Width--;
+					}
 				}
 				//справа 
-				else if (!in_cloud && (cloud_xy_coord[i, 0] - loc_x) < size_plane && (cloud_xy_coord[i, 0] - loc_x) > 0) {
-					label3->Location = Point(loc_x + 100, loc_y);
-					label3->Visible = true;
-					score_text->Text = Convert::ToString(Convert::ToInt32(score_text->Text) - 300);
-					in_cloud = i + 1;
+				if ((cloud_xy_coord[i, 0] - loc_x) < size_plane && (cloud_xy_coord[i, 0] - loc_x) > 0) {
+					if (!in_cloud) {
+						minus300->Location = Point(loc_x + 100, loc_y);
+						minus300->Visible = true;
+						score_text->Text = Convert::ToString(Convert::ToInt32(score_text->Text) - 300);
+						in_cloud = i + 1;
+					}
+					else {
+						green_health->Width--;
+					}
 				}
-
 			}
 			else if (i + 1 == in_cloud) {
 				in_cloud = 0;
-				label3->Visible = false;
+				minus300->Visible = false;
 			}
 			//проверка на встречу облака и самолёта 
-			if ((loc_x + size_plane * 0.7 - cloud_xy_coord[i, 0]) > 0 && (loc_x + size_plane * 0.3 - (cloud_xy_coord[i, 0] + widht_cloud)) < 0 && (loc_y - cloud_xy_coord[i, 1]) > size_plane * -0.5 && (loc_y + size_plane * 0.9 - ((cloud_xy_coord[i, 1]) + height_cloud)) < size_plane * 0.5) {
-				game_over();
-
+			if ((loc_x + size_plane * 0.7 - cloud_xy_coord[i, 0]) > 0 
+				&& (loc_x + size_plane * 0.3 - (cloud_xy_coord[i, 0] + widht_cloud)) < 0
+				&& (loc_y - cloud_xy_coord[i, 1]) > size_plane * -0.5 
+				&& (loc_y + size_plane * 0.9 - ((cloud_xy_coord[i, 1]) + height_cloud)) < size_plane * 0.5) {
+				green_health->Width--;
 			}
 			//возврат ушедшего облака с экрана на начало
 			if (cloud_xy_coord[i, 1] > 600) { //проверка на выход облака за границы 
 				cloud_xy_coord[i, 1] = -100; //возвращаем у-координату облака в начало 
-				cloud_xy_coord[i, 0] = rnd.Next(650); //задаем рандомную х-координату облака 
+				cloud_xy_coord[i, 0] = rnd->Next(650); //задаем рандомную х-координату облака 
 			}
 			//движение облака
 			cloud_xy_coord[i, 1] += speed;
+		}	
+		//проверка здоровья
+		if (green_health->Width == 0) {
+			game_over();
 		}
-		int x = 5;
 		//направления движения самолета
+		int v_plane = 5;
 		if (where_plane.up)
-			promotion(0, -x);
+			promotion(0, -v_plane);
 		if (where_plane.down)
-			promotion(0, x);
+			promotion(0, v_plane);
 		if (where_plane.left)
-			promotion(-x, 0);
+			promotion(-v_plane, 0);
 		if (where_plane.right)
-			promotion(x, 0);
+			promotion(v_plane, 0);
 	}
 
 	private: System::Void Game_button_Click(System::Object^ sender, System::EventArgs^ e) {
