@@ -398,6 +398,36 @@ namespace airport {
 		case Keys::Up: where_plane.up = 0; break;
 		}
 	}
+	private: void game_over() {
+		is_start = false;
+		score = Convert::ToInt32(score_text->Text) / 10;
+		timer1->Stop();
+		//make_new_pass^ new_rec = gcnew make_new_pass();
+		////изменяем свойства вызываемой формы для записи рекордов 
+		//new_rec->is_pass = false;
+		//new_rec->name_file = "record.txt";
+		//new_rec->label2->Text = "Вы набрали " + score + " очков!\nВведите своё имя:";
+		//new_rec->label2->Font = (gcnew System::Drawing::Font(L"Sylfaen", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+		   // static_cast<System::Byte>(204)));
+		//new_rec->Text = "Добавление рекорда";
+		//new_rec->save_pass_button->Text = "Добавить";
+		//new_rec->Font = (gcnew System::Drawing::Font(L"Sylfaen", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+		   // static_cast<System::Byte>(204)));
+		//new_rec->save_pass_button->Font = (gcnew System::Drawing::Font(L"Sylfaen", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+		   // static_cast<System::Byte>(204)));
+		//new_rec->save_pass_button->Show();
+		//new_rec->label1->Text = "Результат добавлен!";
+		//new_rec->score = score;
+		//new_rec->maskedTextBox1->Visible = true;
+		//new_rec->new_pass_textBox->Visible = false;
+		//new_rec->Show();
+		//new_rec->Owner = this;
+		game_button->Show();
+		right_button->Show();
+		rec_button->Show();
+		label1->Show();
+		score_text->Hide();
+	}
 	private: void move_object() {
 		Random rnd;
 		for (int i = 0; i < 9; i++) {
@@ -425,43 +455,17 @@ namespace airport {
 			}
 			//проверка на встречу облака и самолёта 
 			if ((loc_x + size_plane * 0.7 - cloud_xy_coord[i, 0]) > 0 && (loc_x + size_plane * 0.3 - (cloud_xy_coord[i, 0] + widht_cloud)) < 0 && (loc_y - cloud_xy_coord[i, 1]) > size_plane * -0.5 && (loc_y + size_plane * 0.9 - ((cloud_xy_coord[i, 1]) + height_cloud)) < size_plane * 0.5) {
-				is_start = false;
-				score = Convert::ToInt32(score_text->Text) / 10;
-				timer1->Stop();
-				//make_new_pass^ new_rec = gcnew make_new_pass();
-				////изменяем свойства вызываемой формы для записи рекордов 
-				//new_rec->is_pass = false;
-				//new_rec->name_file = "record.txt";
-				//new_rec->label2->Text = "Вы набрали " + score + " очков!\nВведите своё имя:";
-				//new_rec->label2->Font = (gcnew System::Drawing::Font(L"Sylfaen", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				   // static_cast<System::Byte>(204)));
-				//new_rec->Text = "Добавление рекорда";
-				//new_rec->save_pass_button->Text = "Добавить";
-				//new_rec->Font = (gcnew System::Drawing::Font(L"Sylfaen", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				   // static_cast<System::Byte>(204)));
-				//new_rec->save_pass_button->Font = (gcnew System::Drawing::Font(L"Sylfaen", 10, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				   // static_cast<System::Byte>(204)));
-				//new_rec->save_pass_button->Show();
-				//new_rec->label1->Text = "Результат добавлен!";
-				//new_rec->score = score;
-				//new_rec->maskedTextBox1->Visible = true;
-				//new_rec->new_pass_textBox->Visible = false;
-				//new_rec->Show();
-				//new_rec->Owner = this;
-				game_button->Show();
-				right_button->Show();
-				rec_button->Show();
-				label1->Show();
-				score_text->Hide();
+				game_over();
 
 			}
+			//возврат ушедшего облака с экрана на начало
 			if (cloud_xy_coord[i, 1] > 600) { //проверка на выход облака за границы 
 				cloud_xy_coord[i, 1] = -100; //возвращаем у-координату облака в начало 
 				cloud_xy_coord[i, 0] = rnd.Next(650); //задаем рандомную х-координату облака 
 			}
-		}
-		for (int i = 0; i < 9; i++)
+			//движение облака
 			cloud_xy_coord[i, 1] += speed;
+		}
 		int x = 5;
 		//направления движения самолета
 		if (where_plane.up)
